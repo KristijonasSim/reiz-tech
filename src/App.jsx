@@ -2,22 +2,32 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { useState, useEffect } from "react";
 import { countriesAPI } from "./components/api/countriesAPI";
+import useFilterData from "./components/hooks/useFilterData";
 import CountriesList from "./components/countriesComponent/countries/CountriesList";
 import { StyledFilterButton } from "./components/button/StyledFilterButton";
 import { useSearchParams } from "react-router-dom";
+
+
+
+
 
 const App = () => {
   const [countries, setCountries] = useState([]);
   let [searchParams, setSearchParams] = useSearchParams();
 
-  console.log(countries);
-  console.log(searchParams);
+  const { sortedCountries, setSortedCountries } = useFilterData(countries);
+
+
   useEffect(() => {
     countriesAPI
       .getCountries()
       .then((data) => setCountries(data.data))
-      .catch((erorr) => console.log(erorr));
+      .catch((error) => console.log(error));
   }, []);
+
+
+  const restoreCountries = async () => setSortedCountries(countries);
+
 
   const handleOceaniaParams = () => {
     let newSearchParams = new URLSearchParams(searchParams);
@@ -25,6 +35,8 @@ const App = () => {
       newSearchParams.set("filterOceania", "Oceania");
     } else {
       if (newSearchParams.get("filterOceania") === "Oceania") {
+        restoreCountries();
+
         newSearchParams.delete("filterOceania");
       }
     }
@@ -37,6 +49,7 @@ const App = () => {
       newSearchParams.set("filterLithuania", "Lithuania");
     } else {
       if (newSearchParams.get("filterLithuania") === "Lithuania") {
+        restoreCountries();
         newSearchParams.delete("filterLithuania");
       }
     }
@@ -49,6 +62,7 @@ const App = () => {
       newSearchParams.set("filterSortParams", "SortZ-A");
     } else {
       if (newSearchParams.get("filterSortParams") === "SortZ-A") {
+        restoreCountries();
         newSearchParams.delete("filterSortParams");
       }
     }
@@ -66,7 +80,7 @@ const App = () => {
         </StyledFilterButton>
         <StyledFilterButton onClick={handleSortParams}>Z-A</StyledFilterButton>
       </Box>
-      <CountriesList countries={countries} />
+      <CountriesList countries={sortedCountries} />
     </Box>
   );
 };
