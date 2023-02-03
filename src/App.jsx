@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { useState, useEffect } from "react";
 import { countriesAPI } from "./components/api/countriesAPI";
 import CountriesList from "./components/countriesComponent/countries/CountriesList";
+import { StyledFilterButton } from "./components/button/StyledFilterButton";
 const App = () => {
   const [ countries, setCountries ] = useState([])
 
@@ -17,6 +18,11 @@ const App = () => {
 
   return (
     <Box>
+      <Box>
+        <StyledFilterButton>Smaller than Lithuania</StyledFilterButton>
+        <StyledFilterButton>Oceania</StyledFilterButton>
+        <StyledFilterButton>Z-A</StyledFilterButton>
+      </Box>
       <CountriesList countries={countries} />
     </Box>
   );
