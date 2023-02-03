@@ -2,6 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { useState, useEffect } from "react";
 import { countriesAPI } from "./components/api/countriesAPI";
+import CountriesList from "./components/countriesComponent/countries/CountriesList";
 const App = () => {
   const [ countries, setCountries ] = useState([])
 
@@ -15,11 +16,10 @@ const App = () => {
 
 
   return (
-  
-  <Box>
-
-
-  </Box>)
+    <Box>
+      <CountriesList countries={countries} />
+    </Box>
+  );
 };
 
 export default App;
