@@ -1,5 +1,5 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
+import { Box, Pagination } from "@mui/material";
 import { useState, useEffect } from "react";
 import { countriesAPI } from "./components/api/countriesAPI";
 import useFilterData from "./components/hooks/useFilterData";
@@ -7,16 +7,13 @@ import CountriesList from "./components/countriesComponent/countries/CountriesLi
 import { StyledFilterButton } from "./components/button/StyledFilterButton";
 import { useSearchParams } from "react-router-dom";
 
-
-
-
-
 const App = () => {
   const [countries, setCountries] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [countriesPerPage] = useState(10);
   let [searchParams, setSearchParams] = useSearchParams();
 
   const { sortedCountries, setSortedCountries } = useFilterData(countries);
-
 
   useEffect(() => {
     countriesAPI
@@ -25,9 +22,7 @@ const App = () => {
       .catch((error) => console.log(error));
   }, []);
 
-
   const restoreCountries = async () => setSortedCountries(countries);
-
 
   const handleOceaniaParams = () => {
     let newSearchParams = new URLSearchParams(searchParams);
@@ -69,6 +64,17 @@ const App = () => {
     setSearchParams(newSearchParams);
   };
 
+  const indexOfLastCountry = currentPage * countriesPerPage;
+  const indexOfFirstCountry = indexOfLastCountry - countriesPerPage;
+  const currentCountries = sortedCountries.slice(
+    indexOfFirstCountry,
+    indexOfLastCountry
+  );
+
+  const handleChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   return (
     <Box>
       <Box>
@@ -80,7 +86,16 @@ const App = () => {
         </StyledFilterButton>
         <StyledFilterButton onClick={handleSortParams}>Z-A</StyledFilterButton>
       </Box>
-      <CountriesList countries={sortedCountries} />
+      <CountriesList countries={currentCountries} />
+      {sortedCountries.length > countriesPerPage ? (
+        <Pagination
+          count={Math.ceil(sortedCountries.length / countriesPerPage)}
+          page={currentPage}
+          onChange={handleChange}
+          variant="outlined"
+          shape="rounded"
+        />
+      ) : null}
     </Box>
   );
 };
