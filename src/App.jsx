@@ -38,20 +38,11 @@ const App = () => {
 
   const restoreCountries = async () => setSortedCountries(countries);
 
-  /* TODO 
-  create one function from handleOceaniaParams, handleLithuaniaParams, handleSortParams and pass filters type as the argument. Choose the right naming to specify what that function do.
-  for all hardcoded string create enums.
-
-  
-  */
   const handleOceaniaParams = (filterType, filterValue) => {
     let newSearchParams = new URLSearchParams(searchParams);
     if (!newSearchParams.has("filterOceania")) {
       newSearchParams.set("filterOceania", "Oceania");
     } else {
-      /** you can create a const with cllear naming and add it in the if check, the from that const naming it would be more clear wwhat means newSearchParams.get("filterType") === "Oceania"
-       *
-       */
       if (newSearchParams.get("filterOceania") === "Oceania") {
         restoreCountries();
 
