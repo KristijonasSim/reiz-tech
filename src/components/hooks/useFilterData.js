@@ -7,8 +7,12 @@ const useFilterData = (countries) => {
 
   let [searchParams, setSearchParams] = useSearchParams();
 
-
+/** put all hardcoded strings to enum
+ * 
+ * 
+ */
   const handleSortFilter = () => {
+    /** this function (toggleAlphabet) can be outside the handlesortfilter function */
     const toggleAlphabetSort = (arr) => [...arr].sort().reverse()
     const searchFilter = searchParams.get("filterSortParams");
     if (searchFilter === "SortZ-A") {
@@ -28,11 +32,10 @@ const useFilterData = (countries) => {
 
 
   useEffect(() => {
-
+    /** you can create a new function and put everything there, so the use effect jus will call that function, it will look cleaner. */
     if (sortedCountries.length === 0) {
       setSortedCountries(countries)
     }
-
     else {
       applyFilters()
       handleSortFilter()
