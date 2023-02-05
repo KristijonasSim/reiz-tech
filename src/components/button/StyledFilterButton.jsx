@@ -3,6 +3,8 @@ import { Button } from "@mui/material";
 
 export const StyledFilterButton = styled(Button)`
   background: none rgb(0, 255, 0);
+  color: ${(props) => (props.isActivated ? "white" : "black")};
+  background-color: ${(props) => (props.isActivated ? "none" : "#16c406")};
   font-family: sans-serif;
   font-weight: 700;
   padding: 8px 12px;
@@ -13,4 +15,8 @@ export const StyledFilterButton = styled(Button)`
     background-color: rgb(0, 204, 0);
     color: rgb(25, 25, 25);
   }
+  &.active {
+    background-color: #fff;
+  }
 `;
+;
