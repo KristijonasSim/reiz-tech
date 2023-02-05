@@ -15,8 +15,4 @@ export const StyledFilterButton = styled(Button)`
     background-color: rgb(0, 204, 0);
     color: rgb(25, 25, 25);
   }
-  &.active {
-    background-color: #fff;
-  }
 `;
-;

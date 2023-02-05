@@ -1,38 +1,45 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
+export const FILTER_VALUES = {
+  REGION: 'Oceania',
+  COUNTRY: 'Lithuania',
+  SORT_ALPHABET: 'SortZ-A'
+}
+
+export const FILTER_TYPES = {
+  CONTINENT: 'filterOceania',
+  AREA: 'filterLithuania',
+  SORT: 'filterSortParams'
+}
 
 const useFilterData = (countries) => {
-  const [sortedCountries, setSortedCountries] = useState(countries );
+  const [sortedCountries, setSortedCountries] = useState(countries);
 
   let [searchParams, setSearchParams] = useSearchParams();
 
-/** put all hardcoded strings to enum
- * 
- * 
- */
+  const toggleAlphabetSort = (arr) => [...arr].sort().reverse()
+
   const handleSortFilter = () => {
-    /** this function (toggleAlphabet) can be outside the handlesortfilter function */
-    const toggleAlphabetSort = (arr) => [...arr].sort().reverse()
-    const searchFilter = searchParams.get("filterSortParams");
-    if (searchFilter === "SortZ-A") {
-      setSortedCountries((prevState) => toggleAlphabetSort(prevState))}}
+    const searchFilter = searchParams.get(FILTER_TYPES.SORT);
+    if (searchFilter === FILTER_VALUES.SORT_ALPHABET) {
+      setSortedCountries((prevState) => toggleAlphabetSort(prevState))
+    }
+  }
 
   const applyFilters = () => {
     let filteredCountries = [...sortedCountries];
-    if (searchParams.has("filterOceania")) {
-      filteredCountries = filteredCountries.filter(country => country.region === "Oceania");
+    if (searchParams.has(FILTER_TYPES.CONTINENT)) {
+      filteredCountries = filteredCountries.filter(country => country.region === FILTER_VALUES.REGION);
     }
-    if (searchParams.has("filterLithuania")) {
-      const compareCountry = countries.find(c => c.name === "Lithuania");
+    if (searchParams.has(FILTER_TYPES.AREA)) {
+      const compareCountry = countries.find(c => c.name === FILTER_VALUES.COUNTRY);
       filteredCountries = filteredCountries.filter(country => country.area < compareCountry.area);
     }
     setSortedCountries(filteredCountries);
   };
 
-
-  useEffect(() => {
-    /** you can create a new function and put everything there, so the use effect jus will call that function, it will look cleaner. */
+  const updateSortedContries = () => {
     if (sortedCountries.length === 0) {
       setSortedCountries(countries)
     }
@@ -40,11 +47,14 @@ const useFilterData = (countries) => {
       applyFilters()
       handleSortFilter()
     }
+  }
+  useEffect(() => {
 
+    updateSortedContries()
 
   }, [searchParams, countries])
 
-return { sortedCountries, setSortedCountries}
+  return { sortedCountries, setSortedCountries }
 }
 
 export default useFilterData

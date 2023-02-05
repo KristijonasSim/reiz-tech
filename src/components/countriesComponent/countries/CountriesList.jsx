@@ -5,10 +5,10 @@ const CountriesList = ({ countries }) => {
   return (
     <Box>
       {countries.map((props) => (
-        <SingleCountry key={props.name} {...props}/>
+        <SingleCountry key={props.name} {...props} />
       ))}
     </Box>
-  )
-}
+  );
+};
 
-export default CountriesList
+export default CountriesList;
